@@ -28,45 +28,55 @@ func isInteger(x float64) bool {
 }
 
 func main() {
-	sc.Split(bufio.ScanWords)
-	n := nextInt()
-	m := nextInt()
-	q := nextInt()
-	for x := 0; x <= 100; x++ {
-		var flg1 bool
-		for y := 0; y <= 100; y++ {
-			var tmp int
-			var flg bool
-			for k, v := range slice {
-				xi := v[0]
-				yi := v[1]
-				hi := v[2]
-				h := float64(hi) + math.Abs(float64(xi-x)) + math.Abs(float64(yi-y))
-				if h < 0 {
-					h = 0
-				}
-				if k == 0 {
-					tmp = int(h)
-				} else {
-					if tmp == int(h) {
-						flg = true
-						continue
-					} else {
-						flg = false
-						break
-					}
-				}
-			}
+	N := nextInt()
+	M := nextInt()
+	Q := nextInt()
+	var a, b, c, d [50]int
+	for i := 0; i < Q; i++ {
+		a[i] = nextInt()
+		b[i] = nextInt()
+		c[i] = nextInt()
+		d[i] = nextInt()
+	}
 
-			if flg {
-				flg1 = true
-				fmt.Println(x, y, tmp)
-				break
+	ans := 0
+	A := make([]int, N)
+	var dfs func(n, i int)
+	dfs = func(n, i int) {
+		if i == N-1 {
+			A[i] = n
+
+			// calculate sum of points
+			point := 0
+			for j := 0; j < Q; j++ {
+				if A[b[j]-1]-A[a[j]-1] == c[j] {
+					point += d[j]
+				}
 			}
+			chmax(&ans, point)
+			return
 		}
 
-		if flg1 {
-			break
+		A[i] = n
+		for j := n; j <= M; j++ {
+			dfs(j, i+1)
 		}
 	}
+
+	for i := 1; i <= M; i++ {
+		dfs(i, 0)
+	}
+	fmt.Println(ans)
+}
+
+func chmax(a *int, b int) int {
+	m := max2(*a, b)
+	*a = m
+	return m
+}
+func max2(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
