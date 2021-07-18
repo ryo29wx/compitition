@@ -28,6 +28,7 @@ func isInteger(x float64) bool {
 }
 
 func main() {
+	sc.Split(bufio.ScanWords)
 	N := nextInt()
 	M := nextInt()
 	Q := nextInt()
@@ -41,42 +42,32 @@ func main() {
 
 	ans := 0
 	A := make([]int, N)
-	var dfs func(n, i int)
-	dfs = func(n, i int) {
-		if i == N-1 {
-			A[i] = n
+	var dfs func(i, n int)
 
-			// calculate sum of points
-			point := 0
+	dfs = func(i, n int) {
+		if n == N-1 {
+			A[n] = i
+			tmp := 0
 			for j := 0; j < Q; j++ {
 				if A[b[j]-1]-A[a[j]-1] == c[j] {
-					point += d[j]
+					tmp += d[j]
 				}
 			}
-			chmax(&ans, point)
+			if ans < tmp {
+				ans = tmp
+			}
 			return
 		}
 
-		A[i] = n
-		for j := n; j <= M; j++ {
-			dfs(j, i+1)
+		A[n] = i
+		for j := i; j <= M; j++ {
+			dfs(j, n+1)
 		}
 	}
 
+	// 数列の初期値
 	for i := 1; i <= M; i++ {
 		dfs(i, 0)
 	}
 	fmt.Println(ans)
-}
-
-func chmax(a *int, b int) int {
-	m := max2(*a, b)
-	*a = m
-	return m
-}
-func max2(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
 }
