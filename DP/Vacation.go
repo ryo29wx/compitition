@@ -2,13 +2,13 @@ package main
 
 import (
 	"bufio"
-	"container/heap"
 	"fmt"
 	"math"
 	"os"
 	"strconv"
 )
 
+// 入力用
 var sc = bufio.NewScanner(os.Stdin)
 
 func next() string {
@@ -28,6 +28,9 @@ func isInteger(x float64) bool {
 	return math.Floor(x) == x
 }
 
+/////////////////////
+// 以下ダイクストラ  //
+/////////////////////
 type edge struct {
 	to   int
 	cost int
@@ -70,77 +73,68 @@ func (pq *PriorityQueue) update(e *edge, to int, cost int) {
 }
 
 var (
-	g    [500000][]edge //Graph
-	r    int
-	v    int
-	dist [500000]int
+	N  int
+	H  [100010][3]int
+	dp [100010][3]int
 )
 
 const (
-	INF = 1 << 20
+	// Inf = 1 << 20
+	Inf = 0x3f3f3f3f
 )
+
+func chmin(a *int, b int) bool {
+	if *a > b {
+		*a = b
+		return true
+	}
+	return false
+}
+
+func min(a, b int) int {
+	if a > b {
+		return b
+	}
+	return a
+}
+
+func chmax(a *int, b int) bool {
+	if *a < b {
+		*a = b
+		return true
+	}
+	return false
+}
 
 func main() {
 	sc.Split(bufio.ScanWords)
 	///////////
 	// 入力
 	//////////
-	v = nextInt()
-	e := nextInt()
-	r = nextInt() //start
-
-	for i := 0; i < e; i++ {
-		from := nextInt()
-		edges := g[from]
-		var tmp edge
-		tmp.to = nextInt()
-		tmp.cost = nextInt()
-		edges = append(edges, tmp)
-		g[from] = edges
-	}
-
-	dijkstra()
-
-}
-
-func dijkstra() {
-	for i := 0; i < 500000; i++ {
-		dist[i] = INF
-	}
-	dist[r] = 0
-	pq := make(PriorityQueue, 0)
-	for _, e := range g[r] {
-		edge1 := &edge{
-			to:   e.to,
-			cost: e.cost,
+	fmt.Scan(&N)
+	for i := 0; i < N; i++ {
+		for j := 0; j < 3; j++ {
+			H[i][j] = nextInt()
+			dp[i][j] = 0
 		}
-		heap.Push(&pq, edge1)
 	}
 
-	for pq.Len() > 0 {
-		e := heap.Pop(&pq).(*edge)
-		if dist[e.to] != INF {
-			continue
-		}
-		dist[e.to] = e.cost
-		for _, e1 := range g[e.to] {
-			edge1 := &edge{
-				to:   e1.to,
-				cost: e1.cost + e.cost,
+	for i := 0; i < N; i++ {
+		for j := 0; j < 3; j++ {
+			for k := 0; k < 3; k++ {
+				if j == k {
+					continue
+				}
+				chmax(&dp[i+1][k], dp[i][j]+H[i][k])
 			}
-			heap.Push(&pq, edge1)
 		}
+
 	}
 
-	/////////
-	// 出力
-	/////////
-	for i := 0; i < v; i++ {
-		if dist[i] == INF {
-			fmt.Println("INF")
-		} else {
-			fmt.Println(dist[i])
-		}
+	var ans int
+	for i := 0; i < 3; i++ {
+		chmax(&ans, dp[N][i])
 	}
+	fmt.Println(ans)
 
 }
