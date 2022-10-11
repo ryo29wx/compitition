@@ -27,16 +27,34 @@ func isInteger(x float64) bool {
 	return math.Floor(x) == x
 }
 
+var (
+	slice []int
+	c     []int
+)
+
 func main() {
 	sc.Split(bufio.ScanWords)
+	n := nextInt()
+	c = append(c, 0)
+	for i := 1; i <= n; i++ {
+		tmp := nextInt()
+		slice = append(slice, tmp)
+		c = append(c, c[i-1]+tmp)
+	}
 
-	x := nextInt()
-	y := nextInt()
+	for k := 1; k <= n; k++ {
+		var ans int
+		for j := 1; j <= n; j++ {
+			if j-k < 0 {
+				continue
+			}
 
-	if x == y {
-		fmt.Println(x)
-	} else {
-		fmt.Println(3 - x - y)
+			ans1 := c[j] - c[j-k]
+			if ans < ans1 {
+				ans = ans1
+			}
+		}
+		fmt.Println(ans)
 	}
 
 }

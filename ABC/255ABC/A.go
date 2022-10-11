@@ -1,4 +1,4 @@
-package main
+/**package main
 
 import (
 	"bufio"
@@ -29,14 +29,28 @@ func isInteger(x float64) bool {
 
 func main() {
 	sc.Split(bufio.ScanWords)
+	r := nextInt()
+	c := nextInt()
 
-	x := nextInt()
-	y := nextInt()
+	a11 := nextInt()
+	a12 := nextInt()
+	a21 := nextInt()
+	a22 := nextInt()
 
-	if x == y {
-		fmt.Println(x)
+	if r == 1 {
+		if c == 1 {
+			fmt.Println(a11)
+		} else {
+			fmt.Println(a12)
+		}
 	} else {
-		fmt.Println(3 - x - y)
+		if c == 1 {
+			fmt.Println(a21)
+		} else {
+			fmt.Println(a22)
+		}
 	}
+
+	
 
 }

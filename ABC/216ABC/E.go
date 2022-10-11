@@ -27,16 +27,37 @@ func isInteger(x float64) bool {
 	return math.Floor(x) == x
 }
 
+var (
+	dp []int
+	N  int
+	K  int
+)
+
 func main() {
 	sc.Split(bufio.ScanWords)
+	N = nextInt()
 
-	x := nextInt()
-	y := nextInt()
+	for i := 0; i < N; i++ {
 
-	if x == y {
-		fmt.Println(x)
-	} else {
-		fmt.Println(3 - x - y)
 	}
 
+	for {
+		l := len(ans)
+
+		fmt.Printf(ans[l-1])
+		ans = ans[0 : l-1]
+		if len(ans) == 0 {
+			break
+		}
+	}
+	fmt.Printf("\n")
+
+}
+
+func chmax(a *int, b int) bool {
+	if *a < b {
+		*a = b
+		return true
+	}
+	return false
 }

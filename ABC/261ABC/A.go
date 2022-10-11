@@ -29,14 +29,16 @@ func isInteger(x float64) bool {
 
 func main() {
 	sc.Split(bufio.ScanWords)
+	l1 := nextInt()
+	r1 := nextInt()
+	l2 := nextInt()
+	r2 := nextInt()
 
-	x := nextInt()
-	y := nextInt()
-
-	if x == y {
-		fmt.Println(x)
-	} else {
-		fmt.Println(3 - x - y)
-	}
+	ans := 0
+	if r1 <= l2 {
+		ans = 0
+	} else if l2 < r1 && l1 <= l2 {
+		ans = l2 - r1 
+	} else if l2
 
 }
