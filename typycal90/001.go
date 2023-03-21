@@ -1,4 +1,4 @@
-/** package main
+package main
 
 import (
 	"bufio"
@@ -29,7 +29,7 @@ func isInteger(x float64) bool {
 
 var (
 	N, L, K int
-	slice   []int
+	A       []int
 )
 
 func main() {
@@ -39,9 +39,10 @@ func main() {
 	K = nextInt()
 
 	for i := 0; i < N; i++ {
-		slice = append(slice, nextInt())
+		A = append(A, nextInt())
 	}
 
+	// 1. めぐる式二分探索
 	high := L + 1
 	low := -1
 	for high-low > 1 {
@@ -61,9 +62,9 @@ func solve(mid int) bool {
 	count := 0
 	tmp := 0
 	for i := 0; i < N; i++ {
-		if slice[i]-tmp >= mid && L-slice[i] >= mid {
+		if A[i]-tmp >= mid && L-A[i] >= mid {
 			count++
-			tmp = slice[i]
+			tmp = A[i]
 		}
 	}
 
