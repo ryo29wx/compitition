@@ -1,4 +1,4 @@
-/** package main
+package main
 
 import (
 	"bufio"
@@ -29,24 +29,41 @@ func isInteger(x float64) bool {
 
 func main() {
 	sc.Split(bufio.ScanWords)
-	n := nextInt()
+	N := nextInt()
 
-	var a uint
-	var b uint
-
-	a = 10
-	b = 12
-
-	fmt.Println(a)
-	fmt.Println(b)
-	fmt.Println(n)
-
-	for bits := 0; bits < (1 << uint64(n)); bits++ {
-		for i := 0; i < n; i++ {
-			if (bits>>uint64(i))&1 == 1 {
-				fmt.Println(bits)
+	for i := 0; i < (1 << N); i++ {
+		candidate := ""
+		for j := N - 1; j >= 0; j-- {
+			// メモ : (i & (1 << j)) = 0 というのは、i の j ビット目（2^j の位）が 0 であるための条件。
+			// 　　　頻出なので知っておくようにしましょう。
+			if (i & (1 << j)) == 0 {
+				candidate += "("
+			} else {
+				candidate += ")"
 			}
 		}
+		I := hantei(candidate)
+		if I == true {
+			fmt.Println(candidate)
+		}
 	}
+}
 
+func hantei(S string) bool {
+	dep := 0
+	for i := 0; i < len(S); i++ {
+		if S[i] == '(' {
+			dep += 1
+		}
+		if S[i] == ')' {
+			dep -= 1
+		}
+		if dep < 0 {
+			return false
+		}
+	}
+	if dep == 0 {
+		return true
+	}
+	return false
 }
